@@ -1,4 +1,3 @@
-// File: src/main/Main.java
 package Main;
 
 import views.ConsoleUI;

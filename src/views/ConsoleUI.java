@@ -1,19 +1,19 @@
-// File: src/views/ConsoleUI.java
 package views;
 
+import repositories.InMemoryPersonRepository;
 import services.PersonService;
+import services.PersonServiceInterface;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
-    private final PersonService personService;
+    private final PersonServiceInterface personService;
     private final Scanner scanner;
 
     public ConsoleUI() {
-        personService = new PersonService();
+        // Use the singleton pattern to get the service instance
+        personService = PersonService.getInstance(new InMemoryPersonRepository());
         scanner = new Scanner(System.in);
     }
 
@@ -31,7 +31,7 @@ public class ConsoleUI {
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine();  // Consume newline
 
             switch (choice) {
                 case 1:
@@ -69,28 +69,7 @@ public class ConsoleUI {
         String address = scanner.nextLine();
         System.out.print("Enter phone number: ");
         String phoneNumber = scanner.nextLine();
-        System.out.print("Enter CV file path: ");
-        String cvFilePath = scanner.nextLine();
-
-        List<String> roles = new ArrayList<>();
-        System.out.print("Enter number of roles applied to: ");
-        int numRoles = scanner.nextInt();
-        scanner.nextLine();
-        for (int i = 0; i < numRoles; i++) {
-            System.out.print("Enter role: ");
-            roles.add(scanner.nextLine());
-        }
-
-        List<String> skills = new ArrayList<>();
-        System.out.print("Enter number of skills: ");
-        int numSkills = scanner.nextInt();
-        scanner.nextLine();
-        for (int i = 0; i < numSkills; i++) {
-            System.out.print("Enter skill: ");
-            skills.add(scanner.nextLine());
-        }
-
-        personService.addPerson(name, address, phoneNumber, cvFilePath, roles, skills);
+        personService.addPerson(name, address, phoneNumber);
     }
 
     private void editPerson() {
